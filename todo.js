@@ -24,9 +24,8 @@ function createTaskElement(taskText) {
     const taskSpan = document.createElement('span');
     const deleteBtn = document.createElement('button');
 
-    listItem.classList.add("animate__lightSpeedInLeft");
     taskSpan.textContent = taskText;
-    deleteBtn.textContent = 'Supprimer';
+    deleteBtn.textContent = 'Delete';
 
     listItem.appendChild(taskSpan);
     listItem.appendChild(deleteBtn);
