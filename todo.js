@@ -41,7 +41,7 @@ function createTaskElement(taskText, taskDate) {
 
     deleteBtn.addEventListener('click', () => {
         taskList.removeChild(listItem);
-        removeTaskFromLocalStorage(taskText);
+        removeTaskFromLocalStorage(taskText, taskDate);
     });
 
     return listItem;
@@ -53,14 +53,12 @@ function saveTaskToLocalStorage(taskText, taskDate) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-function removeTaskFromLocalStorage(taskText) {
+function removeTaskFromLocalStorage(taskText, taskDate) {
     const tasks = getTasksFromLocalStorage();
-    const index = tasks.indexOf(taskText);
-    if (index > -1) {
-        tasks.splice(index, 1);
-    }
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
+    const updatedTasks = tasks.filter(task => !(task.text === taskText && task.date === taskDate));
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+  }
+  
 
 function getTasksFromLocalStorage() {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
