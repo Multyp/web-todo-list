@@ -6,28 +6,37 @@ addTaskBtn.addEventListener('click', addTask);
 
 function addTask() {
     const taskText = taskInput.value.trim();
+    const taskDate = document.getElementById('taskDate').value;
 
     if (taskText === '') {
-        alert("Veuillez entrer une tâche à faire.");
+        alert("Please enter a task.");
+        return;
+    }
+    if (taskDate === '') {
+        alert("Please enter a date.");
         return;
     }
 
-    const listItem = createTaskElement(taskText);
+    const listItem = createTaskElement(taskText, taskDate);
     taskList.appendChild(listItem);
 
     taskInput.value = '';
-    saveTaskToLocalStorage(taskText);
+    saveTaskToLocalStorage(taskText, taskDate);
 }
 
-function createTaskElement(taskText) {
+
+function createTaskElement(taskText, taskDate) {
     const listItem = document.createElement('li');
     const taskSpan = document.createElement('span');
+    const dateSpan = document.createElement('span');
     const deleteBtn = document.createElement('button');
 
     taskSpan.textContent = taskText;
+    dateSpan.textContent = taskDate;
     deleteBtn.textContent = 'Delete';
 
     listItem.appendChild(taskSpan);
+    listItem.appendChild(dateSpan);
     listItem.appendChild(deleteBtn);
 
     deleteBtn.addEventListener('click', () => {
@@ -38,9 +47,9 @@ function createTaskElement(taskText) {
     return listItem;
 }
 
-function saveTaskToLocalStorage(taskText) {
+function saveTaskToLocalStorage(taskText, taskDate) {
     const tasks = getTasksFromLocalStorage();
-    tasks.push(taskText);
+    tasks.push({ text: taskText, date: taskDate });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
@@ -60,8 +69,8 @@ function getTasksFromLocalStorage() {
 
 function loadTasksFromLocalStorage() {
     const tasks = getTasksFromLocalStorage();
-    tasks.forEach(taskText => {
-        const listItem = createTaskElement(taskText);
+    tasks.forEach(task => {
+        const listItem = createTaskElement(task.text, task.date);
         taskList.appendChild(listItem);
     });
 }
